@@ -7,7 +7,19 @@ const mockUsers=[{id:1,username:"anson",displayname:"Anson"},
 {id:2 ,username:"satavisa",displayname:"Satavisa"},
 {id:3,username:"dia",displayname:"Dia"},
 {id:4,username:"riya",displayname:"Riya"}];
-app.get("/api/users",(request,response)=>{response.send(mockUsers)});
+app.get("/api/users",(request,response)=>{
+  console.log(request.query);
+  const {query:{filter,value}}=request;
+  if(!filter && !value){
+      return response.send(mockUsers);
+  }
+  
+  if(filter && value){
+    return response.send(mockUsers.filter((user)=>user[filter].includes(value)))
+  }
+  return response.send(mockUsers);
+  
+});
 
 app.get("/api/users/:id",(request,response)=>{
   console.log(request.params);
